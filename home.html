@@ -6,7 +6,7 @@
           Hello, {{currentUser.name}}!  You still have
         </div>
         <div class="description">
-          <div class="ui statistics">
+          <div class="ui three statistics">
             <div class="statistic">
               <div class="value" ng-bind="currentUser.timeLeft.hours">
               </div>
@@ -55,8 +55,8 @@
 
 <div class="ui divider"></div>
 
-<div class="ui vertical segment center container">
-  <div class="ui three column grid" >
+<div class="ui vertical segment centered container">
+  <div class="ui three column centered grid" >
     <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink"
     ng-repeat="(key, value) in currentUser.category">
         <!-- <polygon class="hex" points="100,50 75,93 25,93 0,50 25,7 75,7"></polygon> -->

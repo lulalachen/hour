@@ -1,5 +1,5 @@
-<div class="ui vertical segment center container">
-  <div class="ui three column grid" >
+<div class="ui vertical segment centered container">
+  <div class="ui three column centered grid" >
     <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink" ng-repeat="land in lands track by $index" ng-click="getLandInfo(land.landId)">
         <polygon class="hex" points="100,50 75,93 25,93 0,50 25,7 75,7" fill="#fa5" ng-class="{isOccupied: land.status}"></polygon>
         <image x="0" y="0" height="100" width="100" xlink:href="{{land.badgePath}}" />
