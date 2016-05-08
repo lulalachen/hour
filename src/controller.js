@@ -26,6 +26,33 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
 
   console.log($scope.currentUser)
 
+
+  $scope.getLands = function () {
+    // Land Section
+    $http
+    .get(`${APIUrl}/land/data?land=all`)
+    // .get('./src/land.json')
+    .success(function (data) {
+      console.log('land load success')
+      $scope.lands = []
+      for (var i = 0; i < Object.keys(data).length; i++) {
+        var key = Object.keys(data)[i]
+        $scope.lands.push({
+          landId: data[key]._id,
+          status: data[key].owner._id > 0,
+          category: chineseLabelOfCategory[data[key].category],
+          content: data[key].content,
+          badgePath: categoriesPath[data[key].category],
+          interest: data[key].interest,
+          price: data[key].price
+        })
+      }
+    })
+    .error(function(err){
+      console.log(err)
+    })
+  }
+
   // User Authentication Section
   $scope.checkLogin = function () {
     return ($localStorage.user !== undefined)
@@ -37,10 +64,11 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
       console.log('login from local')
       if (!$scope.currentUser.isAlive) {
         console.log(`user ${$scope.currentUser._id} is dead.`)
-        window.location.href = '/';
+        window.location.href = '/dead';
       }
     }
   }
+  $scope.getLands();
   $scope.localLogin();
 
 
@@ -50,6 +78,22 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
     .get(APIUrl + '/user/data?user=' + $scope.userId)
     .success(function(data){
       if (data) {
+        $scope.landHoldings = []
+        tempLandIds = []
+        Object.keys(data.lands).forEach(function (cat) {
+          data.lands[cat].forEach(function (landId) {
+            tempLandIds.push(cat.charAt(0) + landId)
+          })
+        })
+        tempLandIds.forEach(function (landId) {
+          // body...
+          for (var i = 0; i < $scope.lands.length; i++) {
+            if ($scope.lands[i].landId === landId) {
+              $scope.landHoldings.push($scope.lands[i])
+            }
+          }
+        })
+        data.lands = $scope.landHoldings
         $scope.currentUser = data
         $localStorage.user = data
       }
@@ -73,28 +117,8 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
   }
 
   // Land Section
-  $http
-  .get(`${APIUrl}/land/data?land=all`)
-  // .get('./src/land.json')
-  .success(function (data) {
-    console.log('land load success')
-    $scope.lands = []
-    for (var i = 0; i < Object.keys(data).length; i++) {
-      var key = Object.keys(data)[i]
-      $scope.lands.push({
-        landId: data[key]._id,
-        status: data[key].owner._id > 0,
-        category: chineseLabelOfCategory[data[key].category],
-        content: data[key].content,
-        badgePath: categoriesPath[data[key].category],
-        interest: data[key].interest,
-        price: data[key].price
-      })
-    }
-  })
-  .error(function(err){
-    console.log(err)
-  })
+
+  $scope.getLands();
   $scope.errorMessage = '';
 
   $scope.buyLand = function (landId) {
