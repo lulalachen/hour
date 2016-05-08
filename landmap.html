@@ -20,11 +20,12 @@
     </div>
     <div class="description">
       <li>類別：{{currentLand.category}}類</li>
-      <li>利息：{{currentLand.interest}} secs / secs</li>
+      <li>利息：{{currentLand.interest}}</li>
+      <li>出價上限：{{currentLand.price}}</li>
     </div>
     <div class="description error" ng-bind="errorMessage"></div>
     <div class="ui input">
-      <input type="text" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime">
+      <input type="number" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime" >
     </div>
   </div>
   <div class="actions">
