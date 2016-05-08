@@ -1,0 +1,95 @@
+<div class="ui container">
+  <div class="ui centered cards">
+    <div class="ui fluid card">
+      <div class="content centered">
+        <div class="header">
+          Hello, {{currentUser.name}}!  You still have
+        </div>
+        <div class="description">
+          <div class="ui statistics">
+            <div class="statistic">
+              <div class="value" ng-bind="currentUser.timeLeft.hours">
+              </div>
+              <div class="label">
+                Hours
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value" ng-bind="currentUser.timeLeft.mins">
+              </div>
+              <div class="label">
+                Minutes
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value" ng-bind="currentUser.timeLeft.secs">
+              </div>
+              <div class="label">
+                Seconds
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content centered">
+          <div class="header">
+            And, you're interest rate is
+          </div>
+          <div class="description">
+            <div class="ui one statistics">
+              <div class="statistic">
+                <div class="value" ng-bind="currentUser.timeLeft.hours">
+                  {{currentUser.interest}}
+                </div>
+                <div class="label">
+                  secs per seconds
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui vertical segment center container">
+  <div class="ui three column grid" >
+    <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink"
+    ng-repeat="(key, value) in currentUser.category">
+        <!-- <polygon class="hex" points="100,50 75,93 25,93 0,50 25,7 75,7"></polygon> -->
+        <image x="0" y="0" height="100" width="100" xlink:href="{{getBadgePath(key)}}" />
+        <circle cx="80" cy="80" r="20" stroke="grey" stroke-width="3" fill="white" />
+        <text x="80" y="89" text-anchor="middle" font-size="20" fill="black" ng-class="{isNegative: value < 0}"> {{value}}%</text>
+    </svg>
+  </div>
+</div>
+
+
+<!-- <div class="ui container">
+  <div class="ui two column grid">
+    <div class="column">
+      <div class="ui fluid card">
+        <div class="image">
+          <img src="src/badges/learning.svg">
+        </div>
+        <div class="content">
+          <a class="header">Daniel Louise</a>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui fluid card">
+        <div class="image">
+          <img src="src/badges/learning.svg">
+        </div>
+        <div class="content">
+          <a class="header">Helen Troy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->

@@ -1,0 +1,9 @@
+.isOccupied {
+  fill: red;
+}
+.isNegative {
+  fill: red;
+}
+.ui.statistics>.statistic {
+  margin: 0 2em;
+}

@@ -1,0 +1,61 @@
+<div class="ui vertical segment center container">
+  <div class="ui three column grid" >
+    <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink" ng-repeat="land in lands track by $index" ng-click="getLandInfo(land.landId)">
+        <polygon class="hex" points="100,50 75,93 25,93 0,50 25,7 75,7" fill="#fa5" ng-class="{isOccupied: land.status}"></polygon>
+        <image x="0" y="0" height="100" width="100" xlink:href="{{land.badgePath}}" />
+        <circle cx="80" cy="80" r="20" stroke="grey" stroke-width="3" fill="white" />
+        <text x="80" y="89" text-anchor="middle" font-size="20" fill="black"> {{land.landId}}</text>
+    </svg>
+  </div>
+</div>
+
+<div class="ui basic modal form">
+  <i class="close icon"></i>
+  <div class="header">
+    {{currentLand.content}}
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="barcode icon"></i>
+    </div>
+    <div class="description">
+      <li>類別：{{currentLand.category}}類</li>
+      <li>利息：{{currentLand.interest}} secs / secs</li>
+    </div>
+    <div class="description error" ng-bind="errorMessage"></div>
+    <div class="ui input">
+      <input type="text" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="two fluid ui inverted buttons">
+      <div class="ui green basic inverted button" ng-click="buyLand(currentLand.landId)">
+        <i class="checkmark icon"></i>
+        確認購買
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(document)
+    .ready(function() {
+      $('.ui.form.basic.modal')
+        .form({
+          fields: {
+            decimal: {
+              identifier : 'bitTime',
+              rules: [
+                {
+                  type   : 'decimal',
+                  prompt : 'Please enter an integer value'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    })
+  ;
+</script>
