@@ -11,4 +11,5 @@
 .listWrap {
   display: flex !important;
   align-items: center;
+  padding: 0.61428571em 0em !important;
 }
