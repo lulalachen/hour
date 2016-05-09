@@ -1,7 +1,9 @@
 var homeApp = angular.module('homeApp', ['ngRoute', 'ngStorage']);
 console.log('hello app')
 
-const APIUrl = 'https://crossorigin.me/https://art-festival.herokuapp.com';
+const APIUrl = 'https://art-festival.herokuapp.com';
+// const APIUrl = 'http://10.109.134.198:5000';
+// const APIUrl = 'https://crossorigin.me/https://art-festival.herokuapp.com';
 
 const categoriesPath = {
   'learning': 'src/badges/learning.svg',
@@ -31,7 +33,6 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
     // Land Section
     $http
     .get(`${APIUrl}/land/data?land=all`)
-    // .get('./src/land.json')
     .success(function (data) {
       console.log('land load success')
       $scope.lands = []
@@ -71,7 +72,6 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
   $scope.getLands();
   $scope.localLogin();
 
-
   $scope.login = function() {
     // const userId = '10004'
     $http
@@ -96,6 +96,7 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
         data.lands = $scope.landHoldings
         $scope.currentUser = data
         $localStorage.user = data
+        setTimeout(window.location.href = '/', 3000)
       }
     })
     .error(function(err) {
@@ -105,7 +106,7 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
 
   $scope.logout = function () {
     delete $localStorage.user;
-    setTimeout(window.location.href = '/', 1000)
+    setTimeout(window.location.href = '/', 2000)
   }
 
   $scope.getChineseLabel = function (englishName) {
@@ -129,13 +130,13 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
       $http
       .get(`${APIUrl}/land/buy?user=${$scope.currentUser._id}&land=${landId}&time=${$scope.bidTime}`)
       .success(function (data) {
-        $('.ui.basic.modal')
+        $('#buyLandModal')
           .modal('hide')
         ;
       })
       .error(function (err) {
         console.log(err)
-        $('.ui.basic.modal')
+        $('#buyLandModal')
           .modal('hide')
         ;
       })
@@ -146,10 +147,9 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
   }
 
   $scope.getLandInfo = function(landId) {
-
     $scope.currentLand = getLand(landId)
     console.log($scope.currentLand)
-    $('.ui.basic.modal')
+    $('#buyLandModal')
       .modal({
         blurring: true
       })
@@ -164,6 +164,7 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
       }
     }
   }
+
   // Route NavBar Section
   $scope.isActive = function(path) {
     return $location.path() == path
