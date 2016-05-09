@@ -1,9 +1,9 @@
 var homeApp = angular.module('homeApp', ['ngRoute', 'ngStorage']);
 console.log('hello app')
 
-// const APIUrl = 'http://art-festival.herokuapp.com';
-// const APIUrl = 'http://10.109.134.198:5000';
-const APIUrl = 'https://crossorigin.me/https://art-festival.herokuapp.com';
+// const APIUrl = 'https://art-festival.herokuapp.com';
+const APIUrl = 'http://localhost:5000';
+// const APIUrl = 'https://crossorigin.me/https://art-festival.herokuapp.com';
 
 const categoriesPath = {
   'learning': 'src/badges/learning.svg',
