@@ -306,6 +306,7 @@ homeApp.controller('homeCtrl', function (
 
   $scope.closeModal = function () {
     $('#userLoginModal').modal('hide');
+    $('#buySuccessModal').modal('hide');
   }
   var updateCenterTime = function () {
     $http
