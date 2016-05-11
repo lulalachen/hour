@@ -21,7 +21,13 @@ const chineseLabelOfCategory = {
   'career': '事業'
 }
 
-homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage) {
+homeApp.controller('homeCtrl', function (
+  $scope,
+  $interval,
+  $location,
+  $http,
+  $localStorage
+) {
   $scope.currentUser = {}
 
   $scope.lands = [];
@@ -173,7 +179,15 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
   }
 
   // Land Section
-
+  function findLand(landId) {
+    var tempLand = {}
+    for (var i = 0; i < $scope.lands.length; i++) {
+      if ($scope.lands[i].landId === landId){
+        tempLand = $scope.lands[i]
+      }
+    }
+    return tempLand;
+  }
   $scope.getLands();
   $scope.errorMessage = '';
 
@@ -185,21 +199,25 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
       $scope.errorMessage = '請輸入數字'
     } else {
       if (Number($scope.bidTime) > 0
-          && Number($scope.bidTime) <= Number($scope.lands[landId].price)) {
+          && Number($scope.bidTime) <= Number(findLand(landId).price)) {
+        $scope.isLoading = true;
         $http
         .get(`${APIUrl}/land/buy?user=${$scope.currentUser._id}&land=${landId}&money=${$scope.bidTime}`)
         .success(function (data) {
-          $('#buyLandModal')
-            .modal('hide')
-          ;
+          $('#buyLandModal').modal('hide');
           $scope.getTimeLeft();
           $scope.updateLocalStorage();
+          $('#buySuccessModal').modal('show')
+          $scope.isLoading = false;
+
         })
         .error(function (err) {
           console.log(err)
+          $scope.isLoading = false;
           $scope.errorMessage = err.message;
         })
       } else {
+        console.log(Number($scope.bidTime), findLand(landId))
         $scope.errorMessage = '花費時間必須大於零'
         console.log($scope.errorMessage)
       }
@@ -239,20 +257,42 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
     'secs': 0
   }
 
-  $scope.center = {'speed': 1} // 'start' or 'pause'
+  var timer = new Date();
+  var startTime = timer.getTime();
 
-  var timeLeftInterval = setInterval(function() {
+  $scope.addInterest = function() {
+    var timeLeft = $scope.timeLeft;
+    var speed = $scope.center.speed;
+    timeLeft.secs += (timeLeft.interest);
+    timeLeft.secs -= (speed);
+
+    var time = timeLeft.hours*3600 + timeLeft.mins*60 + timeLeft.secs;
+    timeLeft.hours = Math.floor(time / 3600);
+    timeLeft.mins = Math.floor((time % 3600) / 60);
+    timeLeft.secs = Math.floor((time % 3600) % 60);
+    return timeLeft;
+  }
+
+  function dead(timeLeft) {
+    var time = timeLeft.hours*3600 + timeLeft.mins*60 + timeLeft.secs;
+    if (time < 0)
+      return true;
+    else
+      return false;
+  }
+
+  $scope.center = {'speed': 1} // 'start' or 'pause'
+  $scope.redirected = false;
+  $interval(function() {
     if ($scope.center.status != 'pause'
         && $scope.center.status != undefined
-        && $scope.currentUser !== {}) {
-      console.log($scope.currentUser.timeLeft)
-      $scope.timeLeft = addInterest($scope.timeLeft, $scope.center.speed);
-      $scope.currentUser.timeLeft = $scope.timeLeft
-      if (dead($scope.currentUser)) {
-        if (!$scope.isAlive($scope.currentUser._id)) {
-          console.log(`user ${$scope.currentUser._id} is dead.`)
-          window.location.href = '/dead';
-        }
+        && $scope.currentUser !== {}
+        && $scope.redirected === false) {
+      $scope.addInterest();
+      if (dead($scope.timeLeft)) {
+        $scope.redirected = true;
+        console.log(`user ${$scope.currentUser._id} is dead.`)
+        window.location.href = '/#/dead';
       }
     }
   }, 1000)
@@ -266,33 +306,12 @@ homeApp.controller('homeCtrl', function ($scope, $location, $http, $localStorage
     })
   }
   updateCenterTime()
+  $scope.getTimeLeft()
   var updateCenterTimeInterval = setInterval($scope.getTimeLeft, 10000);
   // $scope.getTimeLeft()
-  // var updateCenterTimeInterval = setInterval($scope.getTimeLeft, 3000);
+  var updateCenterTimeInterval = setInterval(updateCenterTime, 30000);
 
 });
-
-var timer = new Date();
-var startTime = timer.getTime();
-
-function addInterest(timeLeft, speed) {
-  timeLeft.secs += (timeLeft.interest);
-  timeLeft.secs -= (speed);
-
-  var time = timeLeft.hours*3600 + timeLeft.mins*60 + timeLeft.secs;
-  timeLeft.hours = Math.floor(time / 3600);
-  timeLeft.mins = Math.floor((time % 3600) / 60);
-  timeLeft.secs = Math.floor((time % 3600) % 60);
-  return timeLeft;
-}
-
-function dead(timeLeft) {
-  var time = timeLeft.hours*3600 + timeLeft.mins*60 + timeLeft.secs;
-  if (time < 0)
-    return true;
-  else
-    return false;
-}
 
 
 homeApp.config(['$routeProvider', function($routeProvider) {

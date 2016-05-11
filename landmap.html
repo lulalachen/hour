@@ -24,6 +24,8 @@
       <li>出價上限：{{currentLand.price}}</li>
     </div>
     <div class="description error" ng-bind="errorMessage"></div>
+    <div class="ui active inline loader" ng-show="isLoading"></div>
+    <div class="ui divider"></div>
     <div class="ui input">
       <input type="number" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime" >
     </div>
@@ -33,6 +35,29 @@
       <div class="ui green basic inverted button" ng-click="buyLand(currentLand.landId)">
         <i class="checkmark icon"></i>
         確認購買
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui basic modal" id="buySuccessModal">
+  <i class="close icon"></i>
+  <div class="header">
+    恭喜你達成{{currentLand.name}}了
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="child icon"></i>
+    </div>
+    <div class="description">
+      <p>唉唷不錯喔，繼續加油。</p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="two fluid ui inverted buttons">
+      <div class="ui green basic inverted button">
+        <i class="checkmark icon"></i>
+        繼續
       </div>
     </div>
   </div>
