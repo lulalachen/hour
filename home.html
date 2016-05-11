@@ -1,4 +1,4 @@
-<div class="ui container">
+<div class="ui container" ng-show="currentUser._id !== undefined">
   <div class="ui centered cards">
     <div class="ui fluid card">
       <div class="content centered">
@@ -8,21 +8,21 @@
         <div class="description">
           <div class="ui three statistics">
             <div class="statistic">
-              <div class="value" ng-bind="currentUser.timeLeft.hours">
+              <div class="value" ng-bind="timeLeft.hours">
               </div>
               <div class="label">
                 Hours
               </div>
             </div>
             <div class="statistic">
-              <div class="value" ng-bind="currentUser.timeLeft.mins">
+              <div class="value" ng-bind="timeLeft.mins">
               </div>
               <div class="label">
                 Minutes
               </div>
             </div>
             <div class="statistic">
-              <div class="value" ng-bind="currentUser.timeLeft.secs">
+              <div class="value" ng-bind="timeLeft.secs">
               </div>
               <div class="label">
                 Seconds
@@ -38,8 +38,7 @@
           <div class="description">
             <div class="ui one statistics">
               <div class="statistic">
-                <div class="value" ng-bind="currentUser.timeLeft.hours">
-                  {{currentUser.interest}}
+                <div class="value" ng-bind="timeLeft.interest">
                 </div>
                 <div class="label">
                   secs per seconds
@@ -53,9 +52,9 @@
   </div>
 </div>
 
-<div class="ui divider"></div>
+<div class="ui divider" ng-show="currentUser._id !== undefined"></div>
 
-<div class="ui vertical segment centered container">
+<div class="ui vertical segment centered container" ng-show="currentUser._id !== undefined">
   <div class="ui three column centered grid" >
     <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink"
     ng-repeat="(key, value) in currentUser.category">
@@ -67,29 +66,7 @@
   </div>
 </div>
 
-
-<!-- <div class="ui container">
-  <div class="ui two column grid">
-    <div class="column">
-      <div class="ui fluid card">
-        <div class="image">
-          <img src="src/badges/learning.svg">
-        </div>
-        <div class="content">
-          <a class="header">Daniel Louise</a>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="ui fluid card">
-        <div class="image">
-          <img src="src/badges/learning.svg">
-        </div>
-        <div class="content">
-          <a class="header">Helen Troy</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
- -->
+<svg id="logo" height="200" width="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ng-hide="currentUser._id !== undefined">
+  <image x="0" y="0" height="200" width="600"  xlink:href="src/badges/logo.svg" />
+  Please Login
+</svg>
