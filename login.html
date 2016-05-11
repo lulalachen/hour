@@ -4,7 +4,7 @@
       <h2 class="ui teal image header">
         <i class="user icon"></i>
         <div class="content">
-          Log-in to your account
+          輸入你的ID
         </div>
       </h2>
       <div class="ui large form">
@@ -21,6 +21,7 @@
               <input type="password" name="password" placeholder="Password" ng-model="password">
             </div>
           </div> -->
+          <div class="ui active inline loader" ng-show="isLoading"></div>
           <div class="ui fluid large teal submit button" ng-click="login()">Login</div>
         </div>
 
@@ -32,5 +33,30 @@
         New to us? <a href="#">Sign Up</a>
       </div> -->
     </div>
+  </div>
+</div>
+
+<div class="ui basic modal" id="userLoginModal">
+  <i class="close icon"></i>
+  <div class="header">
+    歡迎開始遊戲
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="child icon"></i>
+    </div>
+    <div class="description">
+      <p>請繼續前往首頁</p>
+    </div>
+  </div>
+  <div class="actions">
+    <a href="#/" ng-click="closeModal()">
+      <div class="two fluid ui inverted buttons">
+        <div class="ui green basic inverted button">
+          <i class="checkmark icon"></i>
+          繼續
+        </div>
+      </div>
+    </a>
   </div>
 </div>

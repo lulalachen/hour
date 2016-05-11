@@ -21,6 +21,8 @@ const chineseLabelOfCategory = {
   'career': '事業'
 }
 
+const redirectUrl = (window.location.hostname === '127.0.0.1') ? '/' : '/hour/'
+
 homeApp.controller('homeCtrl', function (
   $scope,
   $interval,
@@ -32,7 +34,7 @@ homeApp.controller('homeCtrl', function (
 
   $scope.lands = [];
 
-  console.log($scope.currentUser)
+  console.log($scope.currentUser, window.location)
 
   // Time Section
   $scope.getTimeLeft = function () {
@@ -112,7 +114,7 @@ homeApp.controller('homeCtrl', function (
       $scope.getTimeLeft();
       if (!$scope.currentUser.isAlive) {
         console.log(`user ${$scope.currentUser._id} is dead.`)
-        window.location.href = '/dead';
+        window.location.href = redirectUrl + '#/dead';
       }
     }
   }
@@ -132,6 +134,7 @@ homeApp.controller('homeCtrl', function (
 
   $scope.login = function() {
     // const userId = '10004'
+    $scope.isLoading = true;
     $http
     .get(APIUrl + '/user/data?user=' + $scope.userId)
     .success(function(data){
@@ -156,18 +159,22 @@ homeApp.controller('homeCtrl', function (
         $scope.currentUser = data
         $localStorage.user = data
         $scope.getTimeLeft();
-        // setTimeout(window.location.href = '/', 3000)
+        $('#userLoginModal').modal('show');
+        $scope.isLoading = false;
+        // setTimeout(window.location.href = redirectUrl + '#/dead';, 3000)
       }
     })
     .error(function(err) {
       console.log(err)
+      $scope.isLoading = false;
+
     })
     $scope.userId = ''
   }
 
   $scope.logout = function () {
     delete $localStorage.user;
-    // setTimeout(window.location.href = '/', 2000)
+    // setTimeout(window.location.href = redirectUrl + '#/dead';, 2000)
   }
 
   $scope.getChineseLabel = function (englishName) {
@@ -286,17 +293,20 @@ homeApp.controller('homeCtrl', function (
   $interval(function() {
     if ($scope.center.status != 'pause'
         && $scope.center.status != undefined
-        && $scope.currentUser !== {}
+        && $scope.currentUser._id !== undefined
         && $scope.redirected === false) {
       $scope.addInterest();
       if (dead($scope.timeLeft)) {
         $scope.redirected = true;
         console.log(`user ${$scope.currentUser._id} is dead.`)
-        window.location.href = '/#/dead';
+        window.location.href = redirectUrl + '#/dead';
       }
     }
   }, 1000)
 
+  $scope.closeModal = function () {
+    $('#userLoginModal').modal('hide');
+  }
   var updateCenterTime = function () {
     $http
     .get(`${APIUrl}/center`)
