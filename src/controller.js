@@ -304,8 +304,10 @@ homeApp.controller('homeCtrl', function (
     }
   }, 1000)
 
-  $scope.closeModal = function () {
+  $scope.closeLoginModal = function () {
     $('#userLoginModal').modal('hide');
+  }
+  $scope.closeLandSuccessModal = function () {
     $('#buySuccessModal').modal('hide');
   }
   var updateCenterTime = function () {
