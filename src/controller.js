@@ -302,7 +302,7 @@ homeApp.controller('homeCtrl', function (
         window.location.href = redirectUrl + '#/dead';
       }
     }
-  }, 1000)
+  }, 997)
 
   $scope.closeLoginModal = function () {
     $('#userLoginModal').modal('hide');
@@ -324,6 +324,61 @@ homeApp.controller('homeCtrl', function (
   // $scope.getTimeLeft()
   var updateCenterTimeInterval = setInterval(updateCenterTime, 30000);
 
+  $scope.checkPositionAndBuyLand = function() {
+    $('#checkPositionAndBuyLand')
+      .modal({
+        blurring: true
+      })
+      .modal('setting', 'transition', 'fade up')
+      .modal('show')
+    ;
+    $http
+    .get(`${APIUrl}/user/data?user=` + $localStorage.user._id)
+    .success(function (data) {
+      const whereStand = data.stand;
+      if (whereStand == -1) {
+        $scope.buyLandMessage = '你沒有站在土地上喔！'
+      } else {
+        $scope.currentLand = findLand(whereStand)
+      }
+    })
+  }
+
+  $scope.closePositionAndBuyLandModal = function() {
+    $('#checkPositionAndBuyLand').modal('hide');
+  }
+
+  $scope.buyLandAtHome = function (landId) {
+    console.log(`${$scope.currentUser._id} buys ${landId} with ${$scope.bidTime}`);
+    // $scope.bidTime
+    $scope.errorMessage = ''
+    if (Number($scope.bidTime) == NaN) {
+      $scope.errorMessage = '請輸入數字'
+    } else {
+      if (Number($scope.bidTime) >= 1) {
+        $scope.isLoading = true;
+        $http
+        .get(`${APIUrl}/land/buy?user=${$scope.currentUser._id}&land=${landId}&money=${$scope.bidTime}`)
+        .success(function (data) {
+          $('#checkPositionAndBuyLand').modal('hide');
+          $scope.getTimeLeft();
+          $scope.updateLocalStorage();
+          $('#checkPositionAndBuyLandSuccess').modal('show')
+          $scope.isLoading = false;
+
+        })
+        .error(function (err) {
+          console.log(err)
+          $scope.isLoading = false;
+          $scope.errorMessage = err.message;
+        })
+      } else {
+        console.log(Number($scope.bidTime), findLand(landId))
+        $scope.errorMessage = '花費時間必須大於一'
+        console.log($scope.errorMessage)
+      }
+    }
+  }
 });
 
 

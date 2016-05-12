@@ -38,7 +38,7 @@
           <div class="description">
             <div class="ui one statistics">
               <div class="statistic">
-                <div class="value" ng-bind="timeLeft.interest">
+                <div class="value" ng-bind="timeLeft.interest | number: 1">
                 </div>
                 <div class="label">
                   secs per seconds
@@ -65,6 +65,67 @@
     </svg>
   </div>
 </div>
+
+<div class="ui container centered">
+  <button class="ui button" ng-click="checkPositionAndBuyLand()">
+    BUY LAND
+  </button>
+</div>
+
+<div class="ui basic modal form" id="checkPositionAndBuyLand">
+  <i class="close icon"></i>
+  <div class="header">
+    {{currentLand.content}}
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="barcode icon"></i>
+    </div>
+    <div class="description">
+      <li>類別：{{currentLand.category}}類</li>
+      <li>利息：每秒生成{{currentLand.interest}}秒</li>
+      <li>出價上限：{{currentLand.price}}秒</li>
+    </div>
+    <div class="description error" ng-bind="errorMessage"></div>
+    <div class="ui active inline loader centered" ng-show="isLoading"></div>
+    <div class="ui divider"></div>
+    <div class="ui input">
+      <input type="number" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime" >
+    </div>
+  </div>
+  <div class="actions">
+    <div class="two fluid ui inverted buttons">
+      <div class="ui green basic inverted button" ng-click="buyLandAtHome(currentLand.landId)">
+        <i class="checkmark icon"></i>
+        確認購買
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui basic modal" id="checkPositionAndBuyLandSuccess">
+  <i class="close icon"></i>
+  <div class="header">
+    恭喜你達成{{currentLand.name}}了
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="child icon"></i>
+    </div>
+    <div class="description">
+      <p>唉唷不錯喔，繼續加油。</p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="two fluid ui inverted buttons" ng-click="closePositionAndBuyLandModal()">
+      <div class="ui green basic inverted button">
+        <i class="checkmark icon"></i>
+        繼續
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div id="logo" ng-hide="currentUser._id !== undefined">
   Please Login First (這邊UI我會再修)
