@@ -3,7 +3,7 @@
     <div class="ui fluid card">
       <div class="content centered">
         <div class="header">
-          Hello, {{currentUser.name}}!  You still have
+          嗨, {{currentUser.name}} 你好!
         </div>
         <div class="description">
           <div class="ui three statistics">
@@ -11,21 +11,21 @@
               <div class="value" ng-bind="timeLeft.hours">
               </div>
               <div class="label">
-                Hours
+                小時
               </div>
             </div>
             <div class="statistic">
               <div class="value" ng-bind="timeLeft.mins">
               </div>
               <div class="label">
-                Minutes
+                分鐘
               </div>
             </div>
             <div class="statistic">
               <div class="value" ng-bind="timeLeft.secs">
               </div>
               <div class="label">
-                Seconds
+                秒
               </div>
             </div>
           </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="content centered">
           <div class="header">
-            And, you're interest rate is
+            時間利息
           </div>
           <div class="description">
             <div class="ui one statistics">
@@ -41,7 +41,7 @@
                 <div class="value" ng-bind="timeLeft.interest | number: 1">
                 </div>
                 <div class="label">
-                  secs per seconds
+                  每秒生成
                 </div>
               </div>
             </div>
@@ -54,7 +54,8 @@
 
 <div class="ui divider" ng-show="currentUser._id !== undefined"></div>
 
-<div class="ui vertical segment centered container" ng-show="currentUser._id !== undefined">
+<div class="ui vertical segment centered container badgeWrapper" ng-show="currentUser._id !== undefined">
+  <h2  style="transform: translateX(10px)"><i class="ui icon diamond"></i>你的天賦</h2>
   <div class="ui three column centered grid" >
     <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink"
     ng-repeat="(key, value) in currentUser.category">
@@ -66,9 +67,66 @@
   </div>
 </div>
 
-<div class="ui container centered">
-  <button class="ui button" ng-click="checkPositionAndBuyLand()">
-    BUY LAND
+<div class="ui divider" ng-show="currentUser._id !== undefined"></div>
+
+<div class="ui container holdingAtHome" ng-show="currentUser._id !== undefined">
+  <h2><i class="ui icon rocket"></i>你獲得的成就</h2>
+  <h3 ng-show="currentUser.lands.length == 0">尚未獲得任何成就，加緊腳步喔！</h3>
+  <div class="ui list">
+    <div class="item listWrap" ng-repeat="land in currentUser.lands">
+      <img class="ui avatar image" src="{{land.badgePath}}">
+      <div class="content">
+        <div class="header">{{land.landId}}</div>
+        <div class="description">{{land.content}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui divider" ng-show="currentUser._id !== undefined"></div>
+
+<div class="ui container holdingAtHome" ng-show="currentUser._id !== undefined">
+  <h2><i class="ui icon rocket"></i>排行榜</h2>
+  <div class="ui list">
+    <div class="item listWrap" ng-repeat="user in leaderboardUsers track by $index">
+      <div class="ui grey large circular label">{{$index + 1}}</div>
+      <div class="content leaderBoardContent">
+        <div class="header">{{user.name}}</div>
+        <div class="description">時間利息：{{user.interest}}</div>
+        <div class="description">擁有時間：{{user.timeLeft.hours}}:{{user.timeLeft.mins}}:{{user.timeLeft.secs}}</div>
+        <div class="description">獲得成就：
+          <div class="leaderBoardWrapper">
+            <div ng-repeat="landCat in user.landCats">
+              <img
+                class="ui avatar image"
+                src="{{landCat.badgePath}}"
+              >
+              <div class="landCatCount">{{landCat.count}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-show="buyLandMessage !== ''" class="butLandMessageWrapper">
+  <div class="ui yellow message">
+    <i class="close icon"></i>
+    <div class="header">
+      {{buyLandMessage}}
+    </div>
+    <p>請踩上土地再試試看</p>
+  </div>
+</div>
+
+
+<div class="buyLandButtonWrapper" ng-show="currentUser._id !== undefined">
+  <button ng-click="checkPositionAndBuyLand()" class="buyLandButton">
+    <div class="buyLandButtonText">
+      <i class="ui inverted icon marker" ng-hide="isLoading"></i>
+      <i class="ui spinner loading icon" ng-show="isLoading"></i>
+    </div>
   </button>
 </div>
 
@@ -127,6 +185,33 @@
 </div>
 
 
-<div id="logo" ng-hide="currentUser._id !== undefined">
-  Please Login First (這邊UI我會再修)
+<div class="ui container" id="start" ng-hide="gameStatus !== 'start'">
+  <div class="loginButtonWrapper">
+      <button class="loginButton" ng-click="checkStartOrNot()">START</button>
+  </div>
 </div>
+
+<div class="ui container" id="logo" ng-hide="currentUser._id !== undefined">
+  <div>
+    在HOURS裡，主宰一切的，就是時間。
+    時間是我們唯一的資產。我們操控時間，試著達成目標。
+  </div>
+  <div class="loginButtonWrapper">
+    <div class="secondButtonWrapper">
+      <a href="#/login">
+        <button class="loginButton" >LOGIN</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.message .close')
+    .on('click', function() {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+    })
+  ;
+</script>

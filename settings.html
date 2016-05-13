@@ -4,7 +4,7 @@
       <h2 class="ui teal image header">
         <i class="user icon"></i>
         <div class="content">
-          輸入你的ID
+          更改使用者名稱
         </div>
       </h2>
       <div class="ui large form">
@@ -12,7 +12,7 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="email" placeholder="請輸入你的ID" ng-model="userId">
+              <input type="text" placeholder="請輸入你想改的名稱" ng-model="username">
             </div>
           </div>
           <!-- <div class="field">
@@ -22,7 +22,7 @@
             </div>
           </div> -->
           <div class="ui active inline loader" ng-show="isLoading"></div>
-          <div class="ui fluid large teal submit button" ng-click="login()">登入</div>
+          <div class="ui fluid large teal submit button" ng-click="changeName()">更改名稱</div>
         </div>
 
         <div class="ui error message"></div>
@@ -32,31 +32,6 @@
       <!-- <div class="ui message">
         New to us? <a href="#">Sign Up</a>
       </div> -->
-    </div>
-  </div>
-</div>
-
-<div class="ui basic modal" id="userLoginModal">
-  <i class="close icon"></i>
-  <div class="header">
-    歡迎開始遊戲
-  </div>
-  <div class="image content">
-    <div class="image">
-      <i class="child icon"></i>
-    </div>
-    <div class="description">
-      <p>請繼續前往首頁</p>
-    </div>
-  </div>
-  <div class="actions">
-    <div ng-click="closeLoginModal()">
-      <div class="two fluid ui inverted buttons">
-        <div class="ui green basic inverted button">
-          <i class="checkmark icon"></i>
-          繼續
-        </div>
-      </div>
     </div>
   </div>
 </div>

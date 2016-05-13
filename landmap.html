@@ -21,10 +21,10 @@
     <div class="description">
       <li>類別：{{currentLand.category}}類</li>
       <li>利息：{{currentLand.interest}}</li>
-      <li>出價上限：{{currentLand.price}}</li>
+      <li>出價上限：{{currentLand.price * 2}}</li>
     </div>
     <div class="description error" ng-bind="errorMessage"></div>
-    <div class="ui active inline loader" ng-show="isLoading"></div>
+    <div class="ui active inline sloader" ng-show="isLoading"></div>
     <div class="ui divider"></div>
     <div class="ui input">
       <input type="number" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime" >
@@ -62,26 +62,3 @@
     </div>
   </div>
 </div>
-
-
-<script>
-  $(document)
-    .ready(function() {
-      $('.ui.form.basic.modal')
-        .form({
-          fields: {
-            decimal: {
-              identifier : 'bitTime',
-              rules: [
-                {
-                  type   : 'decimal',
-                  prompt : 'Please enter an integer value'
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-  ;
-</script>

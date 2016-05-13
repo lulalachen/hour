@@ -1,9 +1,11 @@
 .isOccupied {
   fill: red;
 }
+
 .isNegative {
   fill: red;
 }
+
 .ui.statistics>.statistic {
   margin: 0 2em;
 }
@@ -12,4 +14,84 @@
   display: flex !important;
   align-items: center;
   padding: 0.61428571em 0em !important;
+}
+
+.loginButtonWrapper {
+  display: flex;
+  height: 80vh;
+}
+
+.secondButtonWrapper {
+  width: 150px;
+  height: 150px;
+  margin: auto;
+}
+
+.loginButton {
+  margin: auto;
+  padding: 30px;
+  width: 150px;
+  background-color: #555555;
+  color: #FFFFFF;
+  border-radius: 100px;
+  height: 150px;
+  font-size: 30px;
+  border: none;
+  box-shadow: 2px 1px 6px #333333;
+  font-family: monospace;
+}
+
+.butLandMessageWrapper {
+  position: fixed;
+  top: 10vh;
+  width: 100%;
+}
+
+.buyLandButtonWrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+}
+
+.buyLandButton {
+  margin: auto;
+  padding: 30px;
+  width: 30px;
+  background-color: #666762;
+  color: #FFFFFF;
+  border-radius: 30px;
+  height: 30px;
+  border: none;
+  box-shadow: 2px 1px 6px #333333;
+  font-family: monospace;
+}
+
+.buyLandButtonText {
+  top: 21px;
+  position: absolute;
+  left: 1px;
+  font-size: 50px;
+}
+
+.badgeWrapper {
+  transform: translateX(-10px);
+  border-bottom: none;
+}
+
+.holdingAtHome {
+  min-height: 30vh;
+}
+
+.leaderBoardWrapper {
+  display: inline-flex;
+}
+
+.leaderBoardContent {
+  margin: 0 5vw;
+}
+
+.landCatCount {
+  position: relative;
+  text-align: center;
+}
 }

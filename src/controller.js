@@ -13,6 +13,22 @@ const categoriesPath = {
   'career': 'src/badges/career.svg'
 }
 
+const getCategoryByFirstLetter = {
+  'a': 'a',
+  'l': 'b',
+  'c': 'c',
+  'h': 'd',
+  'e': 'e'
+};
+
+const getOriginalCategoryLetter = {
+  'a': 'affection',
+  'b': 'learning',
+  'c': 'career',
+  'd': 'health',
+  'e': 'entertainment'
+}
+
 const chineseLabelOfCategory = {
   'learning': '學習',
   'health': '健康',
@@ -107,30 +123,48 @@ homeApp.controller('homeCtrl', function (
     })
   }
 
-  $scope.localLogin = function () {
-    if ($scope.checkLogin()) {
-      $scope.currentUser = $localStorage.user;
-      console.log('login from local')
-      $scope.getTimeLeft();
-      if (!$scope.currentUser.isAlive) {
-        console.log(`user ${$scope.currentUser._id} is dead.`)
-        window.location.href = redirectUrl + '#/dead';
-      }
-    }
-  }
-  $scope.getLands();
-  $scope.localLogin();
-
   $scope.isAlive = function (userId) {
     $http
     .get(`${APIUrl}/user/data/?user=${userId}`)
     .success(function(data){
+      console.log(data.isAlive)
       return data.isAlive
     })
     .error(function(err){
       console.log(err)
     })
   }
+
+  $scope.checkAliveAndRedirect = function () {
+    const userId = $scope.currentUser._id;
+    $http
+    .get(`${APIUrl}/user/data/?user=${userId}`)
+    .success(function(data){
+      if (!data.isAlive) {
+        console.log(`user ${$scope.currentUser._id} is dead.`)
+        window.location.href = redirectUrl + '#/dead';
+      } else {
+        console.log(`user ${$scope.currentUser._id} is alive.`)
+      }
+    })
+    .error(function(err){
+      console.log(err)
+    })
+  }
+
+  $scope.localLogin = function () {
+    if ($scope.checkLogin()) {
+      $scope.currentUser = $localStorage.user;
+      console.log('login from local')
+      $scope.updateLocalStorage();
+      $scope.checkAliveAndRedirect();
+    }
+  }
+
+  $scope.getLands();
+  $scope.localLogin();
+
+
 
   $scope.login = function() {
     // const userId = '10004'
@@ -276,7 +310,7 @@ homeApp.controller('homeCtrl', function (
     var time = timeLeft.hours*3600 + timeLeft.mins*60 + timeLeft.secs;
     timeLeft.hours = Math.floor(time / 3600);
     timeLeft.mins = Math.floor((time % 3600) / 60);
-    timeLeft.secs = Math.floor((time % 3600) % 60);
+    timeLeft.secs = (time % 3600) % 60;
     return timeLeft;
   }
 
@@ -288,65 +322,144 @@ homeApp.controller('homeCtrl', function (
       return false;
   }
 
-  $scope.center = {'speed': 1} // 'start' or 'pause'
+  $scope.center = { 'speed': 1, 'status': 'pause' } // 'start' or 'pause'
   $scope.redirected = false;
+
   $interval(function() {
     if ($scope.center.status != 'pause'
         && $scope.center.status != undefined
         && $scope.currentUser._id !== undefined
         && $scope.redirected === false) {
+
       $scope.addInterest();
+
       if (dead($scope.timeLeft)) {
         $scope.redirected = true;
-        console.log(`user ${$scope.currentUser._id} is dead.`)
-        window.location.href = redirectUrl + '#/dead';
+        $scope.checkAliveAndRedirect()
       }
     }
   }, 997)
 
   $scope.closeLoginModal = function () {
     $('#userLoginModal').modal('hide');
+    window.location.href = redirectUrl + '#/';
   }
+
   $scope.closeLandSuccessModal = function () {
     $('#buySuccessModal').modal('hide');
   }
+
   var updateCenterTime = function () {
     $http
     .get(`${APIUrl}/center`)
     .success(function (data) {
-      data.status = 'start'
+      console.log(data.status)
       $scope.center = data;
     })
   }
   updateCenterTime()
   $scope.getTimeLeft()
-  var updateCenterTimeInterval = setInterval($scope.getTimeLeft, 10000);
+  var updateTimeLeft = setInterval($scope.getTimeLeft, 99997);
   // $scope.getTimeLeft()
-  var updateCenterTimeInterval = setInterval(updateCenterTime, 30000);
-
+  var updateCenterTimeInterval = setInterval(updateCenterTime, 3000);
+  $scope.buyLandMessage = ''
   $scope.checkPositionAndBuyLand = function() {
-    $('#checkPositionAndBuyLand')
-      .modal({
-        blurring: true
-      })
-      .modal('setting', 'transition', 'fade up')
-      .modal('show')
-    ;
+    $scope.isLoading = true
     $http
     .get(`${APIUrl}/user/data?user=` + $localStorage.user._id)
     .success(function (data) {
+      $scope.isLoading = false
       const whereStand = data.stand;
       if (whereStand == -1) {
         $scope.buyLandMessage = '你沒有站在土地上喔！'
       } else {
+        $('#checkPositionAndBuyLand')
+          .modal({
+            blurring: true
+          })
+          .modal('setting', 'transition', 'fade up')
+          .modal('show')
+        ;
         $scope.currentLand = findLand(whereStand)
       }
+    })
+    .error(function(err){
+      $scope.isLoading = false
     })
   }
 
   $scope.closePositionAndBuyLandModal = function() {
     $('#checkPositionAndBuyLand').modal('hide');
   }
+
+  $scope.username = '';
+
+  $scope.changeName = function () {
+    $scope.isLoading = true;
+    $http
+    .get(`${APIUrl}/user/modify?name=${$scope.username}&user=${$scope.currentUser._id}`)
+    .success(function(data){
+      if ($scope.username !== ''){
+        $scope.currentUser.name = $scope.username;
+        $localStorage.user.name = $scope.username;
+      }
+      $scope.username = '';
+      $scope.isLoading = false;
+    })
+    .error(function(err){
+      console.log(err)
+      $scope.username = '';
+      $scope.isLoading = false;
+    })
+  }
+  $scope.leaderboardUsers = []
+  $scope.getLeaderBoard = function() {
+    $http
+    .get(`${APIUrl}/user/data?user=all`)
+    .success(function(data){
+      $scope.leaderboardUsers = []
+      Object.keys(data).forEach(function(userId) {
+        if (userId < 20) {
+          var tempLandIds = []
+          var tempLandHoldings = []
+          var landCatsCounter = {}
+
+          const letters = ['a', 'b', 'c', 'd', 'e'];
+          letters.forEach(function(letter){
+            landCatsCounter[letter] = {
+              count: 0,
+              category: getOriginalCategoryLetter[letter],
+              badgePath: categoriesPath[getOriginalCategoryLetter[letter]]
+            }
+          })
+
+          data[userId].lands['affection'] = ['a3', 'a5']
+          data[userId].lands['learning'] = ['b2', 'b15']
+          Object.keys(data[userId].lands).forEach(function (cat) {
+            data[userId].lands[cat].forEach(function (landId) {
+              if (landId !== -1){
+                landCatsCounter[getCategoryByFirstLetter[cat.charAt(0)]].count += 1
+                tempLandIds.push(cat.charAt(0) + landId)
+              }
+            })
+          })
+
+          data[userId].landCats = []
+          Object.keys(landCatsCounter).forEach(function(landCat) {
+            data[userId].landCats.push(landCatsCounter[landCat])
+          })
+          $scope.leaderboardUsers.push(data[userId])
+        }
+      })
+
+    })
+    .error(function(err){
+      console.log(err)
+    })
+  }
+
+  $scope.getLeaderBoard()
+  $interval($scope.getLeaderBoard, 10000)
 
   $scope.buyLandAtHome = function (landId) {
     console.log(`${$scope.currentUser._id} buys ${landId} with ${$scope.bidTime}`);
@@ -396,12 +509,16 @@ homeApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: './login.html',
         controller: 'homeCtrl'
       })
-      .when('/leaderboard', {
-        templateUrl: './leaderboard.html',
-        controller: 'homeCtrl'
-      })
-      .when('/holdings', {
-        templateUrl: './holdings.html',
+      // .when('/leaderboard', {
+      //   templateUrl: './leaderboard.html',
+      //   controller: 'homeCtrl'
+      // })
+      // .when('/holdings', {
+      //   templateUrl: './holdings.html',
+      //   controller: 'homeCtrl'
+      // })
+      .when('/settings', {
+        templateUrl: './settings.html',
         controller: 'homeCtrl'
       })
       .when('/dead', {

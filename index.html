@@ -132,15 +132,16 @@
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
       <a class="item" ng-class="{active: isActive('/')}" href="#/">Home</a>
-      <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a>
-      <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a>
+      <!-- <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a> -->
+      <!-- <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a> -->
+      <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings">Settings</a>
       <a class="item" ng-class="{active: isActive('/login')}" href="#/login"  ng-hide="checkLogin()">Login</a>
       <a class="item" href="#/login" ng-show="checkLogin()" ng-click="logout()">Logout</a>
     </div>
 
     <!-- Page Contents -->
     <div class="pusher">
-      <div class="ui large secondary pointing menu">
+      <div class="ui secondary pointing menu">
         <div class="ui container">
           <div class="left item">
             <a class="toc item">
@@ -150,16 +151,17 @@
             </a>
           </div>
           <a class="item" ng-class="{active: isActive('/')}" href="#/">Home</a>
-          <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a>
-          <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a>
+          <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings">Settings</a>
+          <!-- <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a> -->
+          <!-- <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a> -->
           <div class="right item">
-            <a
+            <!-- <a
               class="ui button teal"
               href="#/login"
               ng-hide="checkLogin()"
             >
               Log in
-            </a>
+            </a> -->
             <a class="toc item" id="toggleSidebar"><i class="sidebar icon"></i></a>
           </div>
         </div>
@@ -167,35 +169,17 @@
 
       <div ng-view></div>
 
-      <!-- <div class="ui inverted vertical footer segment">
+      <div class="ui inverted vertical footer segment">
         <div class="ui container">
           <div class="ui stackable inverted divided equal height stackable grid">
-            <div class="three wide column">
-              <h4 class="ui inverted header">About</h4>
-              <div class="ui inverted link list">
-                <a href="#" class="item">Sitemap</a>
-                <a href="#" class="item">Contact Us</a>
-                <a href="#" class="item">Religious Ceremonies</a>
-                <a href="#" class="item">Gazebo Plans</a>
-              </div>
-            </div>
-            <div class="three wide column">
-              <h4 class="ui inverted header">Services</h4>
-              <div class="ui inverted link list">
-                <a href="#" class="item">Banana Pre-Order</a>
-                <a href="#" class="item">DNA FAQ</a>
-                <a href="#" class="item">How To Access</a>
-                <a href="#" class="item">Favorite X-Men</a>
-              </div>
-            </div>
             <div class="seven wide column">
-              <h4 class="ui inverted header">Footer Header</h4>
-              <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+              <h4 class="ui inverted header">Hours</h4>
+              <p>在HOURS裡，主宰一切的，就是時間。<br>時間是我們唯一的資產。我們操控時間、達成目標。</p>
             </div>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
     <script src="lib/dist/semantic.min.js"></script>
     <script src="lib/angular.min.js"></script>
