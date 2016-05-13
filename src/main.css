@@ -18,7 +18,7 @@
 
 .loginButtonWrapper {
   display: flex;
-  height: 80vh;
+  height: 50vh;
 }
 
 .secondButtonWrapper {
@@ -102,5 +102,4 @@
 .landCatCount {
   position: relative;
   text-align: center;
-}
 }
