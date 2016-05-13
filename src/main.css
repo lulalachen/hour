@@ -75,11 +75,20 @@
 
 .badgeWrapper {
   transform: translateX(-10px);
-  border-bottom: none;
+  border-bottom: none !important;
+}
+
+.takeBorderOut {
+  border-bottom: none !important;
 }
 
 .holdingAtHome {
-  min-height: 30vh;
+  /*min-height: 30vh;*/
+  margin-bottom: 20px;
+}
+
+.leaderBoarContainer {
+  margin-bottom: 20px;
 }
 
 .leaderBoardWrapper {

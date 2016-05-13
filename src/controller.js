@@ -86,6 +86,7 @@ homeApp.controller('homeCtrl', function (
           price: data[key].price
         })
       }
+      $scope.updateLocalStorage();
     })
     .error(function(err){
       console.log(err)
@@ -105,11 +106,11 @@ homeApp.controller('homeCtrl', function (
       var tempLandIds = []
       Object.keys(data.lands).forEach(function (cat) {
         data.lands[cat].forEach(function (landId) {
-          tempLandIds.push(cat.charAt(0) + landId)
+          const transformedLetter = getCategoryByFirstLetter[cat.charAt(0)]
+          tempLandIds.push(transformedLetter + landId)
         })
       })
       tempLandIds.forEach(function (landId) {
-        // body...
         for (var i = 0; i < $scope.lands.length; i++) {
           if ($scope.lands[i].landId === landId) {
             $scope.landHoldings.push($scope.lands[i])
