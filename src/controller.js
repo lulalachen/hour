@@ -86,7 +86,11 @@ homeApp.controller('homeCtrl', function (
           price: data[key].price
         })
       }
-      $scope.updateLocalStorage();
+      if ($scope.currentUser._id !== undefined
+          && $scope.currentUser._id !== 'default') {
+        console.log($scope.currentUser)
+        $scope.updateLocalStorage();
+      }
     })
     .error(function(err){
       console.log(err)
@@ -102,6 +106,7 @@ homeApp.controller('homeCtrl', function (
     $http
     .get(APIUrl + '/user/data?user=' + $scope.currentUser._id)
     .success(function(data) {
+      console.log('hit xxxxxxxx')
       $scope.landHoldings = []
       var tempLandIds = []
       Object.keys(data.lands).forEach(function (cat) {
@@ -121,6 +126,9 @@ homeApp.controller('homeCtrl', function (
       $scope.currentUser = data
       $localStorage.user = data
       $scope.getTimeLeft();
+    })
+    .error(function(err){
+      console.log(err)
     })
   }
 
@@ -155,17 +163,17 @@ homeApp.controller('homeCtrl', function (
 
   $scope.localLogin = function () {
     if ($scope.checkLogin()) {
-      $scope.currentUser = $localStorage.user;
-      console.log('login from local')
-      $scope.updateLocalStorage();
-      $scope.checkAliveAndRedirect();
+      if ($localStorage.user._id !== 'default') {
+        $scope.currentUser = $localStorage.user;
+        console.log('login from local')
+        $scope.updateLocalStorage();
+        $scope.checkAliveAndRedirect();
+      }
     }
   }
 
   $scope.getLands();
   $scope.localLogin();
-
-
 
   $scope.login = function() {
     // const userId = '10004'
@@ -196,11 +204,11 @@ homeApp.controller('homeCtrl', function (
         $scope.getTimeLeft();
         $('#userLoginModal').modal('show');
         $scope.isLoading = false;
-        // setTimeout(window.location.href = redirectUrl + '#/dead';, 3000)
       }
     })
     .error(function(err) {
       console.log(err)
+      $scope.loginErrorMessage = '此使用者ID不存在'
       $scope.isLoading = false;
 
     })
@@ -209,7 +217,6 @@ homeApp.controller('homeCtrl', function (
 
   $scope.logout = function () {
     delete $localStorage.user;
-    // setTimeout(window.location.href = redirectUrl + '#/dead';, 2000)
   }
 
   $scope.getChineseLabel = function (englishName) {
@@ -230,7 +237,6 @@ homeApp.controller('homeCtrl', function (
     }
     return tempLand;
   }
-  $scope.getLands();
   $scope.errorMessage = '';
 
   $scope.buyLand = function (landId) {
