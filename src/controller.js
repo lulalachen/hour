@@ -433,8 +433,6 @@ homeApp.controller('homeCtrl', function (
             }
           })
 
-          data[userId].lands['affection'] = ['a3', 'a5']
-          data[userId].lands['learning'] = ['b2', 'b15']
           Object.keys(data[userId].lands).forEach(function (cat) {
             data[userId].lands[cat].forEach(function (landId) {
               if (landId !== -1){
@@ -483,7 +481,7 @@ homeApp.controller('homeCtrl', function (
         .error(function (err) {
           console.log(err)
           $scope.isLoading = false;
-          $scope.errorMessage = err.message;
+          $scope.errorMessage = err.message || '連線問題可以再試一次';
         })
       } else {
         console.log(Number($scope.bidTime), findLand(landId))

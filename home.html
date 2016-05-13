@@ -88,7 +88,7 @@
 <div class="ui container holdingAtHome" ng-show="currentUser._id !== undefined">
   <h2><i class="ui icon rocket"></i>排行榜</h2>
   <div class="ui list">
-    <div class="item listWrap" ng-repeat="user in leaderboardUsers track by $index">
+    <div class="item listWrap" ng-repeat="user in leaderboardUsers | orderBy:'-interest' track by $index ">
       <div class="ui grey large circular label">{{$index + 1}}</div>
       <div class="content leaderBoardContent">
         <div class="header">{{user.name}}</div>
@@ -98,7 +98,7 @@
           <div class="leaderBoardWrapper">
             <div ng-repeat="landCat in user.landCats">
               <img
-                class="ui avatar image"
+                class="ui avatar large image"
                 src="{{landCat.badgePath}}"
               >
               <div class="landCatCount">{{landCat.count}}</div>
