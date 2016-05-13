@@ -8,21 +8,21 @@
         <div class="description">
           <div class="ui three statistics">
             <div class="statistic">
-              <div class="value" ng-bind="timeLeft.hours">
+              <div class="value" ng-bind="timeLeft.hours | number: 0">
               </div>
               <div class="label">
                 小時
               </div>
             </div>
             <div class="statistic">
-              <div class="value" ng-bind="timeLeft.mins">
+              <div class="value" ng-bind="timeLeft.mins | number: 0">
               </div>
               <div class="label">
                 分鐘
               </div>
             </div>
             <div class="statistic">
-              <div class="value" ng-bind="timeLeft.secs">
+              <div class="value" ng-bind="timeLeft.secs | number: 0">
               </div>
               <div class="label">
                 秒

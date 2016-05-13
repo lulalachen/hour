@@ -44,7 +44,8 @@ homeApp.controller('homeCtrl', function (
   $interval,
   $location,
   $http,
-  $localStorage
+  $localStorage,
+  $window
 ) {
   $scope.currentUser = {}
 
@@ -95,6 +96,10 @@ homeApp.controller('homeCtrl', function (
     .error(function(err){
       console.log(err)
     })
+  }
+
+  $scope.reloadRoute = function() {
+     $window.location.reload();
   }
 
   // User Authentication Section
@@ -216,7 +221,8 @@ homeApp.controller('homeCtrl', function (
   }
 
   $scope.logout = function () {
-    delete $localStorage.user;
+    $localStorage.$reset();
+    $scope.reloadRoute();
   }
 
   $scope.getChineseLabel = function (englishName) {
