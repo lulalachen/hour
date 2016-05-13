@@ -503,6 +503,15 @@ homeApp.controller('homeCtrl', function (
       }
     }
   }
+  $scope.hideFooter = function () {
+    if (window.location.href === '#/login'
+        || window.location.href === '#/settings'
+        || $scope.currentUser._id === undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 });
 
 
