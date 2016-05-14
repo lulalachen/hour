@@ -67,6 +67,15 @@ homeApp.controller('homeCtrl', function (
     }
   }
 
+  $scope.getUsername = function(userId) {
+    var result = ''
+    $scope.leaderboardUsers.forEach(function(user) {
+      if (user._id === userId) {
+        result = user.name;
+      }
+    })
+    return result;
+  }
 
   $scope.getLands = function () {
     // Land Section
@@ -80,6 +89,7 @@ homeApp.controller('homeCtrl', function (
         $scope.lands.push({
           landId: data[key]._id,
           status: data[key].owner._id > 0,
+          owner: (data[key].owner._id > 0) ? data[key].owner._id : '尚無人獲得此成就',
           category: chineseLabelOfCategory[data[key].category],
           content: data[key].content,
           badgePath: categoriesPath[data[key].category],
@@ -179,7 +189,7 @@ homeApp.controller('homeCtrl', function (
 
   $scope.getLands();
   $scope.localLogin();
-
+  $scope.loginMessage = ''
   $scope.login = function() {
     // const userId = '10004'
     $scope.isLoading = true;
@@ -213,9 +223,8 @@ homeApp.controller('homeCtrl', function (
     })
     .error(function(err) {
       console.log(err)
-      $scope.loginErrorMessage = '此使用者ID不存在'
+      $scope.loginMessage = err.message || '連線異常';
       $scope.isLoading = false;
-
     })
     $scope.userId = ''
   }
@@ -281,6 +290,12 @@ homeApp.controller('homeCtrl', function (
   $scope.getLandInfo = function(landId) {
     $scope.currentLand = getLand(landId)
     console.log($scope.currentLand)
+    const uid = $scope.currentLand.owner
+    console.log(uid)
+    if (Number(uid) > 0) {
+      console.log('yy')
+      $scope.currentLand.owner = $scope.getUsername(uid)
+    }
 
     $('#buyLandModal')
       .modal({
@@ -384,6 +399,9 @@ homeApp.controller('homeCtrl', function (
       $scope.isLoading = false
       const whereStand = data.stand;
       if (whereStand == -1) {
+        $('#buyLandMessageModal')
+          .closest('.message')
+          .transition('fade');
         $scope.buyLandMessage = '你沒有站在土地上喔！'
       } else {
         $('#checkPositionAndBuyLand')
@@ -394,6 +412,11 @@ homeApp.controller('homeCtrl', function (
           .modal('show')
         ;
         $scope.currentLand = findLand(whereStand)
+        const uid = $scope.currentLand.owner
+        console.log($scope.getUsername(uid))
+        if (uid) {
+          $scope.currentLand.owner = $scope.getUsername(uid);
+        }
       }
     })
     .error(function(err){
@@ -503,6 +526,11 @@ homeApp.controller('homeCtrl', function (
       }
     }
   }
+
+  $scope.closeBuySuccessModal = function () {
+    $('#checkPositionAndBuyLandSuccess').modal('hide');
+  }
+
   $scope.hideFooter = function () {
     if (window.location.href === '#/login'
         || window.location.href === '#/settings'

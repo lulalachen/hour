@@ -41,10 +41,24 @@
   font-family: monospace;
 }
 
-.butLandMessageWrapper {
+.buyLandMessageWrapper {
   position: fixed;
   top: 10vh;
   width: 100%;
+}
+
+.loginMessageWrapper {
+  position: fixed;
+  top: 10vh;
+  width: 100%;
+}
+
+.leaderboardBadgeImage {
+  transform: scale(2);
+}
+
+.leaderboardBadgeWrapper {
+    margin-top: 20px;
 }
 
 .buyLandButtonWrapper {
@@ -76,6 +90,10 @@
 .badgeWrapper {
   transform: translateX(-10px);
   border-bottom: none !important;
+}
+
+.badgeImage {
+  transform: translate(-72px, -53px) scale(2.5);
 }
 
 .takeBorderOut {

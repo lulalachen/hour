@@ -4,6 +4,33 @@
     You are fucking dead!!
   </h2>
   <h3 class="centered container">
-    Please proceed to life broadway, thank you very much.
+    恭喜你完成了Hours裡的人生，請前往人生大道！
   </h3>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui container vertical segment leaderBoarContainer takeBorderOut" ng-show="currentUser._id !== undefined">
+  <h2><i class="ui icon rocket"></i>生前排行榜</h2>
+  <div class="ui list">
+    <div class="item listWrap" ng-repeat="user in leaderboardUsers | orderBy:'-interest' track by $index ">
+      <div class="ui grey large circular label">{{$index + 1}}</div>
+      <div class="content leaderBoardContent">
+        <div class="header">{{user.name}}</div>
+        <div class="description">時間利息：{{user.interest | number: 2}}</div>
+        <div class="description">擁有時間：{{user.timeLeft.hours | number: 0}}:{{user.timeLeft.mins | number: 0}}:{{user.timeLeft.secs | number: 0}}</div>
+        <div class="description">獲得成就：
+          <div class="leaderBoardWrapper">
+            <div ng-repeat="landCat in user.landCats" class="leaderboardBadgeWrapper">
+              <img
+                class="ui avatar large image leaderboardBadgeImage"
+                src="{{landCat.badgePath}}"
+              >
+              <div class="landCatCount">{{landCat.count}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

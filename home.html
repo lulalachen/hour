@@ -60,7 +60,7 @@
     <svg id="color-fill-anchor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120" xmlns:xlink="http://www.w3.org/1999/xlink"
     ng-repeat="(key, value) in currentUser.category">
         <!-- <polygon class="hex" points="100,50 75,93 25,93 0,50 25,7 75,7"></polygon> -->
-        <image x="0" y="0" height="100" width="100" xlink:href="{{getBadgePath(key)}}" />
+        <image x="0" y="0" height="100" width="100" xlink:href="{{getBadgePath(key)}}" class="badgeImage"/>
         <circle cx="80" cy="80" r="20" stroke="grey" stroke-width="3" fill="white" />
         <text x="80" y="89" text-anchor="middle" font-size="20" fill="black" ng-class="{isNegative: value < 0}"> {{value}}%</text>
     </svg>
@@ -92,13 +92,13 @@
       <div class="ui grey large circular label">{{$index + 1}}</div>
       <div class="content leaderBoardContent">
         <div class="header">{{user.name}}</div>
-        <div class="description">時間利息：{{user.interest}}</div>
-        <div class="description">擁有時間：{{user.timeLeft.hours}}:{{user.timeLeft.mins}}:{{user.timeLeft.secs}}</div>
+        <div class="description">時間利息：{{user.interest | number: 2}}</div>
+        <div class="description">擁有時間：{{user.timeLeft.hours | number: 0}}:{{user.timeLeft.mins | number: 0}}:{{user.timeLeft.secs | number: 0}}</div>
         <div class="description">獲得成就：
           <div class="leaderBoardWrapper">
-            <div ng-repeat="landCat in user.landCats">
+            <div ng-repeat="landCat in user.landCats" class="leaderboardBadgeWrapper">
               <img
-                class="ui avatar large image"
+                class="ui avatar large image leaderboardBadgeImage"
                 src="{{landCat.badgePath}}"
               >
               <div class="landCatCount">{{landCat.count}}</div>
@@ -110,7 +110,7 @@
   </div>
 </div>
 
-<div ng-show="buyLandMessage !== ''" class="butLandMessageWrapper">
+<div ng-show="buyLandMessage !== ''" id="buyLandMessageModal" class="buyLandMessageWrapper" ng-click="buyLandMessage = ''">
   <div class="ui yellow message">
     <i class="close icon"></i>
     <div class="header">
@@ -140,15 +140,16 @@
       <i class="barcode icon"></i>
     </div>
     <div class="description">
+      <li>成就保持人：{{currentLand.owner}}</li>
       <li>類別：{{currentLand.category}}類</li>
       <li>利息：每秒生成{{currentLand.interest}}秒</li>
-      <li>出價上限：{{currentLand.price}}秒</li>
+      <li>定價：{{currentLand.price}}秒</li>
     </div>
     <div class="description error" ng-bind="errorMessage"></div>
     <div class="ui active inline loader centered" ng-show="isLoading"></div>
     <div class="ui divider"></div>
     <div class="ui input">
-      <input type="number" placeholder="你打算花多少時間？" name="bidTime" ng-model="bidTime" >
+      <input type="number" placeholder="最高可出兩倍定價喔！" name="bidTime" ng-model="bidTime" >
     </div>
   </div>
   <div class="actions">
@@ -175,7 +176,7 @@
     </div>
   </div>
   <div class="actions">
-    <div class="two fluid ui inverted buttons" ng-click="closePositionAndBuyLandModal()">
+    <div class="two fluid ui inverted buttons" ng-click="closeBuySuccessModal()">
       <div class="ui green basic inverted button">
         <i class="checkmark icon"></i>
         繼續
@@ -204,14 +205,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  $('.message .close')
-    .on('click', function() {
-      $(this)
-        .closest('.message')
-        .transition('fade')
-      ;
-    })
-  ;
-</script>

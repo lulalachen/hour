@@ -60,3 +60,13 @@
     </div>
   </div>
 </div>
+
+<div ng-show="loginMessage !== ''" id="loginMessageModal" class="loginMessageWrapper" ng-click="loginMessage = ''">
+  <div class="ui yellow message">
+    <i class="close icon"></i>
+    <div class="header">
+      {{loginMessage}}
+    </div>
+    <p>再試試看喔，或洽詢工作人員協助</p>
+  </div>
+</div>
