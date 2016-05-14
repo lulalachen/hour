@@ -36,12 +36,19 @@
             時間利息
           </div>
           <div class="description">
-            <div class="ui one statistics">
+            <div class="ui two statistics">
               <div class="statistic">
                 <div class="value" ng-bind="timeLeft.interest | number: 1">
                 </div>
                 <div class="label">
                   每秒生成
+                </div>
+              </div>
+              <div class="statistic">
+                <div class="value" ng-bind="center.speed | number: 0">
+                </div>
+                <div class="label">
+                  倍速度
                 </div>
               </div>
             </div>
@@ -144,6 +151,7 @@
       <li>類別：{{currentLand.category}}類</li>
       <li>利息：每秒生成{{currentLand.interest}}秒</li>
       <li>定價：{{currentLand.price}}秒</li>
+      <li>機率：{{currentLand.probs[0] | number: 0}} % ~ {{currentLand.probs[1] | number: 0}} %</li>
     </div>
     <div class="description error" ng-bind="errorMessage"></div>
     <div class="ui active inline loader centered" ng-show="isLoading"></div>

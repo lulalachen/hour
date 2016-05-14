@@ -391,6 +391,7 @@ homeApp.controller('homeCtrl', function (
   // $scope.getTimeLeft()
   var updateCenterTimeInterval = setInterval(updateCenterTime, 3000);
   $scope.buyLandMessage = ''
+
   $scope.checkPositionAndBuyLand = function() {
     $scope.isLoading = true
     $http
@@ -417,6 +418,16 @@ homeApp.controller('homeCtrl', function (
         if (uid) {
           $scope.currentLand.owner = $scope.getUsername(uid);
         }
+        $http
+        .get(`${APIUrl}/land/prob?user=${$scope.currentUser._id}&land=${$scope.currentLand.landId}`)
+        .success(function(data) {
+          console.log(data)
+          $scope.currentLand.probs = data.probability;
+          console.log($scope.currentLand.probs)
+        })
+        .error(function(err) {
+          console.log(err)
+        })
       }
     })
     .error(function(err){

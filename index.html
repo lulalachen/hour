@@ -131,12 +131,12 @@
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-      <a class="item" ng-class="{active: isActive('/')}" href="#/">Home</a>
+      <a class="item" ng-class="{active: isActive('/')}" href="#/">首頁</a>
       <!-- <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a> -->
       <!-- <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a> -->
-      <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings" ng-show="checkLogin()">Settings</a>
-      <a class="item" ng-class="{active: isActive('/login')}" href="#/login"  ng-hide="checkLogin()">Login</a>
-      <a class="item" ng-show="checkLogin()" ng-click="logout();">Logout</a>
+      <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings" ng-show="checkLogin()">更改名稱</a>
+      <a class="item" ng-class="{active: isActive('/login')}" href="#/login"  ng-hide="checkLogin()">登入</a>
+      <a class="item" ng-show="checkLogin()" ng-click="logout();">登出</a>
     </div>
 
     <!-- Page Contents -->
@@ -150,8 +150,8 @@
               </svg>
             </a>
           </div>
-          <a class="item" ng-class="{active: isActive('/')}" href="#/">Home</a>
-          <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings">Settings</a>
+          <a class="item" ng-class="{active: isActive('/')}" href="#/">首頁</a>
+          <a class="item" ng-class="{active: isActive('/settings')}" href="#/settings">更改名稱</a>
           <!-- <a class="item" ng-class="{active: isActive('/landmap')}" href="#/landmap">LandMap</a> -->
           <!-- <a class="item" ng-class="{active: isActive('/holdings')}" href="#/holdings">Holdings</a> -->
           <div class="right item">
